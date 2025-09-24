@@ -43,7 +43,7 @@ A TypeScript + PostgreSQL backend for a Kinstone fusion mini-game. Players colle
 
 ```bash
 # Clone and install dependencies
-npm install
+yarn install
 
 # Copy environment template
 cp .env.example .env
@@ -52,13 +52,13 @@ cp .env.example .env
 # DATABASE_URL=postgresql://username:password@localhost:5432/kinstone_db
 
 # Run migrations to create schema
-npm run migrate
+yarn migrate
 
 # Seed with test data
-npm run seed
+yarn seed
 
 # Start development server (with TypeScript compilation)
-npm run dev
+yarn dev
 ```
 
 ### Database Setup
@@ -67,13 +67,13 @@ The system includes a complete migration and seeding system:
 
 ```bash
 # Create database schema
-npm run migrate
+yarn migrate
 
 # Populate with test pieces and users
-npm run seed
+yarn seed
 
 # Start fresh (migrate + seed)
-npm run migrate && npm run seed
+yarn setup
 ```
 
 ## 📊 Database Schema
@@ -254,17 +254,16 @@ The seed system creates:
 
 ### Scripts
 ```bash
-npm run build        # Compile TypeScript to JavaScript
-npm run dev          # Development server with ts-node-dev
-npm run start        # Production server (requires build first)
-npm run test         # Run test suite
-npm run test:system  # Run system integration test
-npm run migrate      # Run database migrations
-npm run seed         # Populate test data
-npm run setup        # Run migrate + seed
-npm run type-check   # Type check without compilation
-npm run lint         # Run ESLint
-npm run lint:fix     # Fix ESLint issues
+yarn build        # Compile TypeScript to JavaScript (Next.js build)
+yarn dev          # Development server with Next.js
+yarn start        # Production server (requires build first)
+yarn test         # Run test suite
+yarn test:system  # Run system integration test
+yarn migrate      # Run database migrations
+yarn seed         # Populate test data
+yarn setup        # Run migrate + seed
+yarn type-check   # Type check without compilation
+yarn lint         # Run Next.js ESLint
 ```
 
 ### Environment Variables

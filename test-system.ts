@@ -2,17 +2,17 @@
 
 /**
  * Test script to demonstrate the Kinstone fusion system
- * Run with: npm run test:system
+ * Run with: yarn test:system
  */
 
-import dotenv from 'dotenv';
-import { UserModel } from './src/models/User';
-import { InventoryModel } from './src/models/Inventory';
-import { PieceModel } from './src/models/Piece';
-import { FusionModel } from './src/models/Fusion';
-import { RewardModel } from './src/models/Reward';
-import { close } from './src/database/connection';
-import { UserWithInventory, InventoryEntryWithPiece } from './src/types/database';
+import * as dotenv from 'dotenv';
+import { UserModel } from './lib/models/User';
+import { InventoryModel } from './lib/models/Inventory';
+import { PieceModel } from './lib/models/Piece';
+import { FusionModel } from './lib/models/Fusion';
+import { RewardModel } from './lib/models/Reward';
+import { close } from './lib/database/connection';
+import { UserWithInventory, InventoryEntryWithPiece } from './lib/types/database';
 
 dotenv.config();
 
