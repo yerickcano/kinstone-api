@@ -1,6 +1,6 @@
 # Kinstone Fusion API
 
-A TypeScript + PostgreSQL backend for a Kinstone fusion mini-game. Players collect two-part stone pieces and fuse complementary halves to create complete Kinstones, earning rewards and scores.
+A TypeScript + Next.js + Neon Database backend for a Kinstone fusion mini-game. Players collect two-part stone pieces and fuse complementary halves to create complete Kinstones, earning rewards and scores.
 
 ## 🎮 Game Concept
 
@@ -36,7 +36,7 @@ A TypeScript + PostgreSQL backend for a Kinstone fusion mini-game. Players colle
 
 ### Prerequisites
 - Node.js 16+
-- PostgreSQL 12+
+- Neon Database account (free tier available)
 - TypeScript 5.1+
 
 ### Installation
@@ -45,11 +45,13 @@ A TypeScript + PostgreSQL backend for a Kinstone fusion mini-game. Players colle
 # Clone and install dependencies
 yarn install
 
-# Copy environment template
-cp .env.example .env
+# Set up Neon Database
+# 1. Create account at https://console.neon.tech/
+# 2. Create a new project
+# 3. Copy the connection string
 
-# Edit .env with your database credentials
-# DATABASE_URL=postgresql://username:password@localhost:5432/kinstone_db
+# Create .env file with your Neon connection string
+echo "DATABASE_URL=your_neon_connection_string_here" > .env
 
 # Run migrations to create schema
 yarn migrate
@@ -57,7 +59,7 @@ yarn migrate
 # Seed with test data
 yarn seed
 
-# Start development server (with TypeScript compilation)
+# Start development server
 yarn dev
 ```
 
@@ -268,13 +270,10 @@ yarn lint         # Run Next.js ESLint
 
 ### Environment Variables
 ```bash
-DATABASE_URL=postgresql://user:pass@host:port/db
-DB_HOST=localhost
-DB_PORT=5432
-DB_NAME=kinstone_db
-DB_USER=username
-DB_PASSWORD=password
-PORT=3000
+# Neon Database connection string (required)
+DATABASE_URL=postgresql://username:password@ep-example-123456.us-east-1.aws.neon.tech/kinstone_db?sslmode=require
+
+# Optional configuration
 NODE_ENV=development
 DEFAULT_INVENTORY_CAPACITY=50
 ```

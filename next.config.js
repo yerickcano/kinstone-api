@@ -1,10 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
-    serverComponentsExternalPackages: ['pg']
+    serverComponentsExternalPackages: ['@neondatabase/serverless']
   },
   webpack: (config) => {
-    // Handle PostgreSQL native bindings
+    // Neon serverless doesn't need native bindings
     config.externals.push({
       'pg-native': 'commonjs pg-native'
     });

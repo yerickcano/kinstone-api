@@ -1,66 +1,64 @@
-import { Pool, PoolClient, QueryResult, QueryResultRow } from 'pg';
+import { neon, neonConfig, Pool } from '@neondatabase/serverless';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
 
-// Database connection configuration
-interface DatabaseConfig {
-  host?: string;
-  port?: number;
-  database?: string;
-  user?: string;
-  password?: string;
-  connectionString?: string;
-  ssl?: boolean | { rejectUnauthorized: boolean };
-  max?: number;
-  idleTimeoutMillis?: number;
-  connectionTimeoutMillis?: number;
+// Configure Neon for serverless environments
+neonConfig.fetchConnectionCache = true;
+
+// Get the database URL from environment
+const databaseUrl = process.env.DATABASE_URL;
+
+if (!databaseUrl) {
+  throw new Error('DATABASE_URL environment variable is required for Neon Database');
 }
 
-const config: DatabaseConfig = {
-  host: process.env.DB_HOST || 'localhost',
-  port: parseInt(process.env.DB_PORT || '5432', 10),
-  database: process.env.DB_NAME || 'kinstone_db',
-  user: process.env.DB_USER || 'postgres',
-  password: process.env.DB_PASSWORD || '',
-  // Use connection string if provided (for managed services like Vercel Postgres)
-  ...(process.env.DATABASE_URL && { connectionString: process.env.DATABASE_URL }),
-  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
-  max: 20, // Maximum number of clients in the pool
-  idleTimeoutMillis: 30000, // Close idle clients after 30 seconds
-  connectionTimeoutMillis: 2000, // Return an error after 2 seconds if connection could not be established
-};
+// Create Neon SQL client for direct queries
+const sql = neon(databaseUrl);
 
-// Create connection pool
-const pool = new Pool(config);
+// Create Neon Pool for transactions (when needed)
+const pool = new Pool({ connectionString: databaseUrl });
 
-// Handle pool errors
-pool.on('error', (err) => {
-  console.error('Unexpected error on idle client', err);
-  process.exit(-1);
-});
+// Test connection on startup (only in development)
+if (process.env.NODE_ENV === 'development') {
+  sql`SELECT 1 as test`
+    .then(() => console.log('✅ Neon Database connected successfully'))
+    .catch((err) => console.error('❌ Neon Database connection failed:', err));
+}
 
+// Define types for compatibility with existing code
+interface QueryResult<T = any> {
+  rows: T[];
+  rowCount: number;
+}
 
-// Test connection on startup
-pool.connect((err, _client, release) => {
-  if (err) {
-    console.error('Error acquiring client', err.stack);
-    return;
-  }
-  console.log('Database connected successfully');
-  release();
-});
+interface PoolClient {
+  query<T = any>(text: string, params?: any[]): Promise<QueryResult<T>>;
+  release(): void;
+}
 
 /**
- * Execute a query with optional parameters
+ * Execute a query with optional parameters using Neon's serverless SQL
  */
-const query = async <T extends QueryResultRow = any>(text: string, params?: any[]): Promise<QueryResult<T>> => {
+const query = async <T = any>(text: string, params?: any[]): Promise<QueryResult<T>> => {
   const start = Date.now();
   try {
-    const res = await pool.query<T>(text, params);
+    // Use Neon's serverless SQL client
+    const rows = await sql(text, params || []) as T[];
     const duration = Date.now() - start;
-    console.log('Executed query', { text: text.substring(0, 100), duration, rows: res.rowCount });
-    return res;
+    
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Executed query', { 
+        text: text.substring(0, 100), 
+        duration, 
+        rows: rows.length 
+      });
+    }
+    
+    return {
+      rows,
+      rowCount: rows.length
+    };
   } catch (error: unknown) {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     console.error('Query error', { text: text.substring(0, 100), error: errorMessage });
@@ -72,17 +70,39 @@ const query = async <T extends QueryResultRow = any>(text: string, params?: any[
  * Get a client from the pool for transactions
  */
 const getClient = async (): Promise<PoolClient> => {
-  return await pool.connect();
+  const client = await pool.connect();
+  return {
+    query: async <T = any>(text: string, params?: any[]): Promise<QueryResult<T>> => {
+      const result = await client.query(text, params) as any;
+      return {
+        rows: result.rows || result,
+        rowCount: result.rowCount || result.length
+      };
+    },
+    release: () => client.release()
+  };
 };
 
 /**
- * Execute multiple queries in a transaction
+ * Execute multiple queries in a transaction using Neon Pool
  */
 const transaction = async <T>(callback: (client: PoolClient) => Promise<T>): Promise<T> => {
   const client = await pool.connect();
   try {
     await client.query('BEGIN');
-    const result = await callback(client);
+    
+    const wrappedClient: PoolClient = {
+      query: async <U = any>(text: string, params?: any[]): Promise<QueryResult<U>> => {
+        const result = await client.query(text, params);
+        return {
+          rows: result.rows || result,
+          rowCount: result.rowCount || (result as any).length || 0
+        };
+      },
+      release: () => client.release()
+    };
+    
+    const result = await callback(wrappedClient);
     await client.query('COMMIT');
     return result;
   } catch (error) {
@@ -105,5 +125,6 @@ export {
   getClient,
   transaction,
   close,
-  pool
+  pool,
+  sql
 };
