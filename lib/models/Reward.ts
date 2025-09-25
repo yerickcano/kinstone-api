@@ -1,4 +1,3 @@
-import { PoolClient } from 'pg';
 import { query, transaction } from '../database/connection';
 import { 
   Reward,
@@ -104,7 +103,7 @@ export class RewardModel {
    * Claim a pending reward
    */
   static async claim(rewardId: string, userId: string): Promise<RewardWithFusion> {
-    return await transaction(async (client: PoolClient) => {
+    return await transaction(async (client) => {
       // Lock and verify reward
       const rewardResult = await client.query<Reward>(
         `SELECT * FROM rewards 
@@ -231,7 +230,7 @@ export class RewardModel {
    * Bulk claim all pending rewards for a user
    */
   static async claimAllPending(userId: string): Promise<RewardWithFusion[]> {
-    return await transaction(async (client: PoolClient) => {
+    return await transaction(async (client) => {
       // Get all pending rewards
       const pendingResult = await client.query<Reward>(
         `SELECT * FROM rewards 

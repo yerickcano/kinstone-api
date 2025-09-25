@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+.next/
+dist/
+out/
+
+# Config files
+next.config.js
+jest.config.js
+.eslintrc.js
+
+# Test files
+test-*.js
+test-*.ts
+
+# Database files
+*.sql
+
+# Logs
+*.log
+
+# Environment files
+.env*
+
+# Yarn
+yarn.lock
+.yarn/

@@ -1,4 +1,3 @@
-import { PoolClient } from 'pg';
 import { query, transaction } from '../database/connection';
 import { 
   Fusion,
@@ -29,7 +28,7 @@ export class FusionModel {
       throw new Error('Cannot fuse a piece with itself');
     }
 
-    return await transaction(async (client: PoolClient) => {
+    return await transaction(async (client) => {
       // Lock and validate both inventory entries with row-level locking
       const entriesResult = await client.query<any>(
         `SELECT ie.*, p.id as piece_id, p.name, p.shape_family, p.half, p.rarity
@@ -71,7 +70,7 @@ export class FusionModel {
           'legendary': 250
         };
         
-        scoreValue = (rarityScores[entry1.rarity] || 0) + (rarityScores[entry2.rarity] || 0);
+        scoreValue = (rarityScores[entry1.rarity as PieceRarity] || 0) + (rarityScores[entry2.rarity as PieceRarity] || 0);
         
         // Determine reward (simple logic for now)
         if (entry1.rarity === 'legendary' || entry2.rarity === 'legendary') {
@@ -142,7 +141,7 @@ export class FusionModel {
             rarity: entry2.rarity
           }
         },
-        reward: rewardData,
+        reward: rewardData || undefined,
         consumed_pieces: isCompatible ? [entry1.id, entry2.id] : []
       };
     });

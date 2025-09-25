@@ -1,4 +1,3 @@
-import { PoolClient } from 'pg';
 import { query, transaction } from '../database/connection';
 import { 
   InventoryWithEntries,
@@ -55,7 +54,7 @@ export class InventoryModel {
     pieceId: string, 
     provenance: InventoryEntryProvenance = 'drop'
   ): Promise<InventoryEntryWithPiece> {
-    return await transaction(async (client: PoolClient) => {
+    return await transaction(async (client) => {
       // Get inventory and check capacity
       const inventoryResult = await client.query<any>(
         `SELECT * FROM inventories WHERE user_id = $1`,
@@ -110,7 +109,7 @@ export class InventoryModel {
     userId: string, 
     entryId: string
   ): Promise<InventoryEntryWithPiece> {
-    return await transaction(async (client: PoolClient) => {
+    return await transaction(async (client) => {
       // Get entry details before deletion
       const entryResult = await client.query<any>(
         `SELECT ie.*, p.name, p.shape_family, p.half, p.rarity

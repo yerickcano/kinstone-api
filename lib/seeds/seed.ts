@@ -1,5 +1,4 @@
-import { PoolClient } from 'pg';
-import { query, transaction, close } from '../database/connection';
+import { transaction, close } from '../database/connection';
 import { pieces } from './pieces';
 import { User } from '../types/database';
 
@@ -12,7 +11,7 @@ async function seedDatabase(): Promise<void> {
   try {
     console.log('Starting database seeding...');
     
-    await transaction(async (client: PoolClient) => {
+    await transaction(async (client) => {
       // Clear existing data (in reverse dependency order)
       console.log('Clearing existing data...');
       await client.query('DELETE FROM rewards');

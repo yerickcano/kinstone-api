@@ -1,29 +1,25 @@
 module.exports = {
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    project: 'tsconfig.json',
-    tsconfigRootDir: __dirname,
-    sourceType: 'module',
-  },
-  plugins: ['@typescript-eslint'],
   extends: [
-    'eslint:recommended',
-    '@typescript-eslint/recommended',
-    '@typescript-eslint/recommended-requiring-type-checking',
+    'next/core-web-vitals',
+    'next/typescript'
   ],
-  root: true,
+  rules: {
+    // Custom rules for our API
+    '@typescript-eslint/no-unused-vars': 'error',
+    '@typescript-eslint/no-explicit-any': 'off', // Allow any in database/API code for flexibility
+    '@typescript-eslint/explicit-function-return-type': 'off', // Next.js API routes don't need explicit return types
+    'prefer-const': 'error',
+    'no-var': 'error',
+    'no-console': 'off', // Allow console.log in API routes
+  },
   env: {
     node: true,
-    jest: true,
+    es6: true,
   },
-  ignorePatterns: ['.eslintrc.js', 'dist/', 'node_modules/'],
-  rules: {
-    '@typescript-eslint/interface-name-prefix': 'off',
-    '@typescript-eslint/explicit-function-return-type': 'warn',
-    '@typescript-eslint/explicit-module-boundary-types': 'warn',
-    '@typescript-eslint/no-explicit-any': 'warn',
-    '@typescript-eslint/no-unused-vars': 'error',
-    '@typescript-eslint/prefer-const': 'error',
-    '@typescript-eslint/no-var-requires': 'error',
-  },
+  ignorePatterns: [
+    'node_modules/',
+    '.next/',
+    'dist/',
+    '*.js' // Ignore JS config files
+  ]
 };

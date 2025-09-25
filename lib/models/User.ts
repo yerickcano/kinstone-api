@@ -1,4 +1,3 @@
-import { PoolClient } from 'pg';
 import { query, transaction } from '../database/connection';
 import { 
   User, 
@@ -27,7 +26,7 @@ export class UserModel {
     display_name, 
     inventory_capacity = 50 
   }: CreateUserData): Promise<UserWithInventory> {
-    return await transaction(async (client: PoolClient) => {
+    return await transaction(async (client) => {
       // Create user
       const userResult = await client.query<User>(
         `INSERT INTO users (handle, display_name) 
