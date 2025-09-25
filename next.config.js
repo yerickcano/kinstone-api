@@ -9,7 +9,16 @@ const nextConfig = {
       'pg-native': 'commonjs pg-native'
     });
     return config;
-  }
+  },
+  // Serve static files from docs directory
+  async rewrites() {
+    return [
+      {
+        source: '/docs/:path*',
+        destination: '/docs/:path*',
+      },
+    ];
+  },
 };
 
 module.exports = nextConfig;

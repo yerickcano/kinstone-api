@@ -1,0 +1,435 @@
+/* Markdown Renderer Styles */
+.markdown-renderer {
+  max-width: 100%;
+  line-height: 1.6;
+  color: #22577a !important;
+  background: #c7f9cc !important;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+/* Force text colors for all elements */
+.markdown-renderer * {
+  color: inherit !important;
+}
+
+.markdown-renderer p,
+.markdown-renderer div,
+.markdown-renderer span,
+.markdown-renderer li,
+.markdown-renderer td,
+.markdown-renderer th,
+.markdown-renderer strong,
+.markdown-renderer em,
+.markdown-renderer ul,
+.markdown-renderer ol {
+  color: #22577a !important;
+}
+
+/* Override any white text */
+.markdown-renderer [style*="color: white"],
+.markdown-renderer [style*="color: #fff"],
+.markdown-renderer [style*="color: #ffffff"] {
+  color: #22577a !important;
+}
+
+/* Override any deep black text */
+.markdown-renderer [style*="color: black"],
+.markdown-renderer [style*="color: #000"],
+.markdown-renderer [style*="color: #000000"],
+.markdown-renderer [style*="color: #1a1a1a"],
+.markdown-renderer [style*="color: #2a2a2a"],
+.markdown-renderer [style*="color: #333"],
+.markdown-renderer [style*="color: #333333"] {
+  color: #22577a !important;
+}
+
+/* Override any black backgrounds */
+.markdown-renderer [style*="background: black"],
+.markdown-renderer [style*="background: #000"],
+.markdown-renderer [style*="background: #000000"],
+.markdown-renderer [style*="background-color: black"],
+.markdown-renderer [style*="background-color: #000"],
+.markdown-renderer [style*="background-color: #000000"],
+.markdown-renderer [style*="background-color: #1a1a1a"],
+.markdown-renderer [style*="background-color: #2a2a2a"],
+.markdown-renderer [style*="background-color: #333"],
+.markdown-renderer [style*="background-color: #333333"] {
+  background: #38a3a5 !important;
+  color: #c7f9cc !important;
+}
+
+/* Loading State */
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #0070f3;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Error State */
+.error-message {
+  background: #fee;
+  border: 1px solid #fcc;
+  border-radius: 8px;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.error-message h3 {
+  color: #c33;
+  margin-top: 0;
+}
+
+.retry-button {
+  background: #0070f3;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+.retry-button:hover {
+  background: #0051cc;
+}
+
+/* Headings */
+.markdown-renderer h1,
+.heading-1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 2rem 0 1rem 0;
+  color: #22577a !important;
+  border-bottom: 3px solid #38a3a5;
+  padding-bottom: 0.5rem;
+}
+
+.markdown-renderer h2,
+.heading-2 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin: 1.5rem 0 1rem 0;
+  color: #22577a !important;
+  border-bottom: 2px solid #57cc99;
+  padding-bottom: 0.3rem;
+}
+
+.markdown-renderer h3,
+.heading-3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 1.25rem 0 0.75rem 0;
+  color: #38a3a5 !important;
+}
+
+.markdown-renderer h4,
+.markdown-renderer h5,
+.markdown-renderer h6 {
+  color: #38a3a5 !important;
+  margin: 1rem 0 0.5rem 0;
+}
+
+/* Paragraphs */
+.markdown-renderer p {
+  margin: 1rem 0;
+  line-height: 1.7;
+}
+
+/* Code Blocks - All variations */
+.markdown-renderer pre {
+  background: #22577a !important;
+  color: #c7f9cc !important;
+  border: 1px solid #38a3a5;
+  border-radius: 6px;
+  padding: 1rem;
+  overflow-x: auto;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace !important;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  margin: 1rem 0;
+}
+
+.markdown-renderer pre code,
+.markdown-renderer pre code *,
+.code-block,
+.code-block code,
+.code-block code * {
+  background: transparent !important;
+  color: #c7f9cc !important;
+  padding: 0 !important;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace !important;
+}
+
+/* Inline code */
+.markdown-renderer code:not(pre code),
+.inline-code {
+  background: #38a3a5 !important;
+  color: #c7f9cc !important;
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace !important;
+  font-size: 0.9em;
+  border: 1px solid #57cc99;
+}
+
+/* Override syntax highlighting colors */
+.markdown-renderer pre .hljs,
+.markdown-renderer pre .hljs *,
+.markdown-renderer pre [class*="language-"],
+.markdown-renderer pre [class*="language-"] * {
+  background: transparent !important;
+  color: #c7f9cc !important;
+}
+
+/* Nuclear option - override ALL backgrounds in markdown content */
+.markdown-renderer * {
+  background-color: inherit !important;
+}
+
+.markdown-renderer table * {
+  background-color: inherit !important;
+}
+
+/* Specific targeting for code elements that might have black backgrounds */
+.markdown-renderer code[style],
+.markdown-renderer span[style*="background"],
+.markdown-renderer td code[style],
+.markdown-renderer th code[style] {
+  background: #38a3a5 !important;
+  color: #c7f9cc !important;
+}
+
+/* Tables */
+.table-wrapper {
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+
+.markdown-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #57cc99;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #80ed99;
+}
+
+.markdown-table th {
+  background: #57cc99;
+  padding: 0.75rem;
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 1px solid #38a3a5;
+  color: #22577a;
+}
+
+.markdown-table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid #57cc99;
+  vertical-align: top;
+  color: #22577a;
+}
+
+.markdown-table tr:last-child td {
+  border-bottom: none;
+}
+
+.markdown-table tr:nth-child(even) {
+  background: #c7f9cc;
+}
+
+/* Fix any deep black elements in tables */
+.markdown-table td strong,
+.markdown-table td b,
+.markdown-table td code,
+.markdown-table th strong,
+.markdown-table th b {
+  color: #22577a !important;
+  background: transparent !important;
+}
+
+/* Table code elements - more aggressive targeting */
+.markdown-table td code,
+.markdown-table th code,
+.markdown-table code,
+.markdown-renderer table code,
+.markdown-renderer table td code,
+.markdown-renderer table th code {
+  background: #38a3a5 !important;
+  color: #c7f9cc !important;
+  padding: 0.1rem 0.3rem;
+  border-radius: 3px;
+  font-size: 0.85em;
+}
+
+/* Override any black backgrounds in table cells */
+.markdown-table td,
+.markdown-table th,
+.markdown-table td *,
+.markdown-table th * {
+  background-color: inherit !important;
+}
+
+/* Specific overrides for field names and values */
+.markdown-table td[style*="background"],
+.markdown-table th[style*="background"],
+.markdown-table td *[style*="background"],
+.markdown-table th *[style*="background"] {
+  background: transparent !important;
+}
+
+/* Force table cell backgrounds */
+.markdown-table td {
+  background: #80ed99 !important;
+}
+
+.markdown-table tr:nth-child(even) td {
+  background: #c7f9cc !important;
+}
+
+.markdown-table th {
+  background: #57cc99 !important;
+}
+
+/* Links */
+.markdown-link {
+  color: #38a3a5;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease;
+}
+
+.markdown-link:hover {
+  border-bottom-color: #38a3a5;
+}
+
+/* Lists */
+.markdown-renderer ul,
+.markdown-renderer ol {
+  margin: 1rem 0;
+  padding-left: 2rem;
+}
+
+.markdown-renderer li {
+  margin: 0.5rem 0;
+  line-height: 1.6;
+}
+
+/* Blockquotes */
+.markdown-blockquote {
+  border-left: 4px solid #38a3a5;
+  margin: 1rem 0;
+  padding: 0.5rem 0 0.5rem 1rem;
+  background: #80ed99;
+  font-style: italic;
+  color: #22577a;
+}
+
+/* Horizontal Rules */
+.markdown-renderer hr {
+  border: none;
+  height: 2px;
+  background: linear-gradient(to right, #0070f3, transparent);
+  margin: 2rem 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .markdown-renderer {
+    padding: 0 1rem;
+  }
+  
+  .heading-1 {
+    font-size: 2rem;
+  }
+  
+  .heading-2 {
+    font-size: 1.5rem;
+  }
+  
+  .heading-3 {
+    font-size: 1.25rem;
+  }
+  
+  .code-block {
+    font-size: 0.8rem;
+    padding: 0.75rem;
+  }
+  
+  .markdown-table {
+    font-size: 0.9rem;
+  }
+  
+  .markdown-table th,
+  .markdown-table td {
+    padding: 0.5rem;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .markdown-renderer {
+    color: #e1e4e8;
+  }
+  
+  .heading-1,
+  .heading-2,
+  .heading-3 {
+    color: #f0f6fc;
+  }
+  
+  .code-block {
+    background: #161b22;
+    border-color: #30363d;
+    color: #e1e4e8;
+  }
+  
+  .inline-code {
+    background: #262c36;
+    color: #f97583;
+  }
+  
+  .markdown-table {
+    border-color: #30363d;
+  }
+  
+  .markdown-table th {
+    background: #21262d;
+    color: #f0f6fc;
+    border-color: #30363d;
+  }
+  
+  .markdown-table td {
+    border-color: #30363d;
+  }
+  
+  .markdown-table tr:nth-child(even) {
+    background: #0d1117;
+  }
+  
+  .markdown-blockquote {
+    background: #161b22;
+    color: #8b949e;
+    border-left-color: #0070f3;
+  }
+}
